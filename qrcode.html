@@ -493,7 +493,7 @@ camera.addEventListener("click", () => {
   form.classList.add("pointerEvents");
   p.innerText = "Scanning QR Code...";
 
-  scanner = new Instascan.Scanner({ video: video, mirror: true });
+  scanner = new Instascan.Scanner({ video: video, mirror: false });
 
   Instascan.Camera.getCameras()
     .then(cameras => {
