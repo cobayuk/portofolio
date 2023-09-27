@@ -290,12 +290,7 @@ nav button.active{
   .pointerEvents{
     pointer-events: none;
   }
-
-@media screen and (max-device-width: 480px){
-  video {
-    transform: scaleX(-1);
-  }
-  }
+  
 </style>
 </head>
 <body>
@@ -307,7 +302,7 @@ nav button.active{
     </nav>
     <!-- Generator -->
     <div class="generator">
-      <h1>QR Codes Generator</h1>
+      <h1>QR Code Generator</h1>
       <p>Paste a url or enter text to create QR code</p>
 
       <div class="generator-form">
@@ -336,7 +331,7 @@ nav button.active{
         <input type="file" accept="image/*" hidden>
 
         <img src="./qryt.png" alt="qr-code">
-        <video></video>
+        <video style="-webkit-transform: scaleX(-1);transform: scaleX(-1);"></video>
 
         <div class="content">
           <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -436,7 +431,7 @@ qrInput.addEventListener("input", () => {
 </script>
   <!-- scanner.js -->
 <script>
-const scannerDiv = document.querySelector(".scanner");
+  const scannerDiv = document.querySelector(".scanner");
 
 const camera = scannerDiv.querySelector("h1 .fa-camera");
 const stopCam = scannerDiv.querySelector("h1 .fa-circle-stop");
@@ -486,40 +481,26 @@ function fetchRequest(file){
 
 // Scan QR Code Camera
 let scanner;
-let selectedCamera = null; // Menambahkan variabel selectedCamera untuk melacak kamera yang dipilih
 
 camera.addEventListener("click", () => {
   camera.style.display = "none";
   form.classList.add("pointerEvents");
   p.innerText = "Scanning QR Code...";
 
-  scanner = new Instascan.Scanner({ video: video });
+  scanner = new Instascan.Scanner({video: video});
 
   Instascan.Camera.getCameras()
     .then(cameras => {
-      // Pilih kamera belakang jika tersedia
-      for (let i = 0; i < cameras.length; i++) {
-        if (cameras[i].name.includes("back")) {
-          selectedCamera = cameras[i];
-          break;
-        }
-      }
-
-      // Jika tidak ada kamera belakang yang tersedia, gunakan kamera pertama
-      if (!selectedCamera && cameras.length > 0) {
-        selectedCamera = cameras[0];
-      }
-
-      if (selectedCamera) {
-        scanner.start(selectedCamera).then(() => {
+      if(cameras.length > 0){
+        scanner.start(cameras[0]).then(() => {
           form.classList.add("active-video");
           stopCam.style.display = "inline-block";
-        });
-      } else {
-        console.log("No Back Cameras Found");
+        })
+      }else{
+        console.log("No Cameras Found");
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error(err))
   
   // addListener not addEventListener
   scanner.addListener("scan", c => {
@@ -552,6 +533,6 @@ function stopScan(){
   if(scanner) scanner.stop();
 }
 </script>
-  <script src="js/instascan.min.js"></script>
+  <script src="instascan.min.js"></script>
 </body>
 </html>
