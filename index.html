@@ -1,9 +1,130 @@
 <!DOCTYPE html>
-<html lang="in">
+<html>
 <head>
-				<title>Judul halaman</title>
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .profile-picture {
+      border-radius: 50%;
+      border: 5px solid #007bff;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+    .name {
+      margin-top: 5px; /* Adjust the margin here */
+    }
+    .work-title {
+      margin-top: 20px; /* Adjust the margin here */
+      position: relative;
+    }
+    .line {
+      width: 150px;
+      height: 2px;
+      background-color: #007bff;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .line2 {
+      align-items: right;
+      width: 50px;
+      height: 2px;
+      background-color: #007bff;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .work {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .app {
+      width: 25%;
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .app img {
+      max-width: 100%;
+      height: auto;
+    }
+    .app-name {
+      margin-top: 0px;
+      font-weight: bold;
+    }
+    .mywork{
+    				margin-top: 5vh;
+    				height: 95vh;
+    }
+    a{
+     color: inherit;
+     text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-				Hallo World!
+  <div class="container">
+    <img class="profile-picture" src="your_profile_picture.jpg" alt="Profile Picture">
+    <h1 class="name">Your Name</h1>
+    <a href="#mywork"><button>My Work</button></a>
+  </div>
+<div class="mywork">
+  <div id="mywork" class="work-title">
+    <div class="line"></div>
+    <h2>My Work</h2>
+    <div class="line2"></div>
+  </div>
+  <div class="work">
+    <a class="app" href="/walink">
+      <div><i class="fab fa-whatsapp"></i></div>
+      <p class="app-name">WA Link Generator</p>
+    </a>
+    <div class="app">
+      <img src="icon/gojek.png" alt="App 2">
+      <p class="app-name">App 2</p>
+    </div>
+    <div class="app">
+      <img src="icon/facebook.png" alt="App 3">
+      <p class="app-name">App 3</p>
+    </div>
+    <div class="app">
+      <img src="icon/snapchat.png" alt="App 4">
+      <p class="app-name">App 4</p>
+    </div>
+    <div class="app">
+      <img src="icon/dropbox.png" alt="App 1">
+      <p class="app-name">App 1</p>
+    </div>
+    <div class="app">
+      <img src="icon/gojek.png" alt="App 2">
+      <p class="app-name">App 2</p>
+    </div>
+    <div class="app">
+      <img src="icon/facebook.png" alt="App 3">
+      <p class="app-name">App 3</p>
+    </div>
+    <div class="app">
+      <img src="icon/snapchat.png" alt="App 4">
+      <p class="app-name">App 4</p>
+    </div>
+    <!-- Add more apps here -->
+  </div>
+</div>
 </body>
 </html>
