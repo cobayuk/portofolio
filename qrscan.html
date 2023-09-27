@@ -481,26 +481,40 @@ function fetchRequest(file){
 
 // Scan QR Code Camera
 let scanner;
+let selectedCamera = null; // Menambahkan variabel selectedCamera untuk melacak kamera yang dipilih
 
 camera.addEventListener("click", () => {
   camera.style.display = "none";
   form.classList.add("pointerEvents");
   p.innerText = "Scanning QR Code...";
 
-  scanner = new Instascan.Scanner({video: video});
+  scanner = new Instascan.Scanner({ video: video, mirror: false });
 
   Instascan.Camera.getCameras()
     .then(cameras => {
-      if(cameras.length > 0){
-        scanner.start(cameras[0]).then(() => {
+      // Pilih kamera belakang jika tersedia
+      for (let i = 0; i < cameras.length; i++) {
+        if (cameras[i].name.includes("back")) {
+          selectedCamera = cameras[i];
+          break;
+        }
+      }
+
+      // Jika tidak ada kamera belakang yang tersedia, gunakan kamera pertama
+      if (!selectedCamera && cameras.length > 0) {
+        selectedCamera = cameras[0];
+      }
+
+      if (selectedCamera) {
+        scanner.start(selectedCamera).then(() => {
           form.classList.add("active-video");
           stopCam.style.display = "inline-block";
-        })
-      }else{
-        console.log("No Cameras Found");
+        });
+      } else {
+        console.log("No Back Cameras Found");
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => console.error(err));
   
   // addListener not addEventListener
   scanner.addListener("scan", c => {
@@ -508,7 +522,6 @@ camera.addEventListener("click", () => {
     textarea.innerText = c;
   })
 })
-
 
 // Copy
 copyBtn.addEventListener("click", () => {
