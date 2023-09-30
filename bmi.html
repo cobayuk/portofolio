@@ -20,16 +20,12 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
-        footer {
-            position: fixed;
-            bottom: 10px;
-            left: 0;
-            right: 0;
+        credit {
             text-align: center;
             color: black;
             font-size: 0.8em;
         }
-        footer a{
+        credit a{
             text-decoration: none;
         }
 
@@ -116,9 +112,7 @@
             cursor: pointer;
             margin-top: 30px;
             font-size: 16px;
-        }
-        .peringatan {
-            color: red;
+            margin-bottom: 10px;
         }
         #hasil-container {
             display: none;
@@ -131,6 +125,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-bottom: 10px;
         }
         table {
             min-width: 32%;
@@ -206,7 +201,7 @@
             color: ; /* Gaya CSS untuk pesan saran berat */
         }
         hr{
-            border: solid 1.5px #3C486B;
+            border: solid 1.5px #111;
         }
     </style>
 </head>
@@ -265,9 +260,9 @@
             </ul>
             <button id="kembali-button" onclick="kembaliKeInput()">Kembali ke Input</button>
         </div>
+        <credit style="display:none">Build with <i class="fa fa-heart" style="color:red"></i> by <a href="./index.html">Tatang Aditya</a></credit>
     </div>
-    <footer>Build with <i class="fa fa-heart" style="color:red"></i> by <a href="./index.html">Tatang Aditya</a></footer>
-
+    
     <script>
         // Fungsi untuk memilih gender
         function selectGender(gender) {
