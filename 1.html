@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Kalkulator Kredit</title>
+<style>
+body{
+    font-family: 'Euclid Circular A', sans-serif;
+    max-width: 400px;
+    margin: 10px auto;
+    border-radius: 10px;
+    border: 5px solid blue;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+h1{
+    padding: 10px 10px 30px;
+    text-align: center;
+    border-bottom: 5px solid #17a2b8;
+}
+    /* CSS untuk Formulir */
+form {
+    padding: 15px;
+    margin-right: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-right: 100px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* CSS untuk Hasil Perhitungan */
+#hasil{
+    padding: 15px;
+    margin-right: 15px;
+    margin-bottom: 30px;
+}
+h2 {
+    margin-top: 40px;
+    font-size: 24px;
+    padding-left: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+table{
+    margin: 0 auto;
+    width: 100%;
+}
+tr td:first-child{
+    padding-left: 20px;
+    width: 60%;
+}
+
+td {
+    text-align: left;
+    width: 40%;
+    padding: 0 20px;
+    font-size: 18px;
+
+}
+table td:nth-child(2)::before {
+    content: ":  ";
+    white-space: nowrap;
+    padding-right: 30px;
+    margin-left: -30px;
+}
+
+#totalBungaRp {
+    color: #28a745;
+}
+
+#totalBungaPersen {
+    color: #17a2b8;
+}
+
+#hargaTotal {
+    color: #dc3545;
+}
+
+/* CSS untuk Pesan Error */
+.error-message {
+    color: #dc3545;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+</style>
+</head>
+<body>
+    <h1>Kalkulator Kredit</h1>
+    <form id="kreditForm">
+        <label for="hargaCash">Harga Cash (Rp):</label>
+        <input type="text" id="hargaCash" value="15.340.000" id="inputku" oninput="formatInput(this)" onblur="formatInput(this, true);" required><br>
+
+        <label for="uangMuka">Uang Muka (Rp):</label>
+        <input type="text" id="uangMuka" value="2.000.000" oninput="formatInput(this)" onblur="formatInput(this, true);" required><br>
+
+        <label for="angsuranPerBulan">Jumlah Angsuran per Bulan (Rp):</label>
+        <input type="text" id="angsuranPerBulan" value="770.000" oninput="formatInput(this)" onblur="formatInput(this, true);" required><br>
+
+        <label for="tenor">Tenor (Jumlah Bulan):</label>
+        <input type="text" id="tenor" value="29" oninput="formatInput(this)" onblur="formatInput(this, true);" required><br>
+
+        <button type="button" onclick="hitungKredit()">Hitung</button>
+    </form>
+    <div id="hasil">
+        <h2>Hasil Perhitungan</h2>
+        <table>
+            <tr>
+                <td>Harga Total (Rp)</td>
+                <td id="hargaTotal">0</td>
+            </tr>            <tr>
+                <td>Total Bunga (%)</td>
+                <td id="totalBungaPersen">0</td>
+            </tr>
+            <tr>
+                <td>Total Bunga (Rp)</td>
+                <td id="totalBungaRp">0</td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        function hitungKredit() {
+            // Mengambil nilai dari input
+            const hargaCash = parseFloat(document.getElementById('hargaCash').value.replace(/\./g, '').replace(',', '.'));
+            const uangMuka = parseFloat(document.getElementById('uangMuka').value.replace(/\./g, '').replace(',', '.'));
+            const angsuranPerBulan = parseFloat(document.getElementById('angsuranPerBulan').value.replace(/\./g, '').replace(',', '.'));
+            const tenor = parseInt(document.getElementById('tenor').value);
+
+            // Menghitung total bunga dalam (Rp)
+            const jumlahPinjaman = hargaCash - uangMuka;
+            const totalBungaRp = (angsuranPerBulan * tenor) - jumlahPinjaman;
+
+            // Menghitung total bunga dalam (%)
+            const totalBungaPersen = (totalBungaRp / jumlahPinjaman) * 100;
+
+            // Menghitung harga total
+            const hargaTotal = hargaCash + totalBungaRp;
+
+            // Menampilkan hasil perhitungan
+            document.getElementById('totalBungaRp').textContent = totalBungaRp.toLocaleString('id-ID');
+            document.getElementById('totalBungaPersen').textContent = totalBungaPersen.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+            document.getElementById('hargaTotal').textContent = hargaTotal.toLocaleString('id-ID');
+        }
+
+        function formatInput(input, blur) {
+            // Hapus semua karakter non-digit
+            let value = input.value.replace(/\D/g, '');
+
+            // Konversi nilai ke tampilan yang sesuai dengan bahasa Indonesia
+            value = parseInt(value).toLocaleString('id-ID');
+
+            // Terapkan tampilan nilai ke dalam input
+            input.value = value;
+
+            // Jika blur adalah true, hapus pemisah ribuan sebelum menyimpan nilai
+            if (blur) {
+                input.value = value.replace(/\./g, '');
+            }
+        }
+    </script>
+</body>
+</html>
