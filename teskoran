@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Kraepelin (Tes Koran)</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .soal {
+            
+        }
+
+        input {
+            text-align: center;
+        }
+								
+								#answer, #refreshButton{
+												margin: 0 auto;
+								}
+								
+        #question,
+        #answer {
+            display: none;
+        }
+        
+        #refreshButton {
+    								display: none;
+    								width: 200px;
+    								padding: 12px 20px;
+    								background: #F56;
+    								font-size: 16px;
+    								color: #fff;
+    								border: none;
+    								border-radius: 10px;
+    								font-weight: bold;
+    				 }
+    				 
+    				 #startButton{
+    								padding: 12px 40px;
+    								background: #000;
+    								font-size: 16px;
+    								margin-left: 10px;
+    								color: #fff;
+    								border: none;
+    								border-radius: 10px;
+    				 }
+    				
+        #duration{
+        				width: 50px;
+        				font-size: 16px;
+        				height: 40px;
+        				border-radius: 10px;
+        				border: 1px solid #ddd;
+        }
+        
+        #startContainer {
+            margin-top: 20px;
+        }
+
+        #result {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        #score {
+            margin-top: 30px;
+            text-align: left;
+            padding: 0 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        p {
+            margin: 5px;
+        }
+
+        #correctAnswers {
+            color: green;
+        }
+
+        #wrongAnswers {
+            color: red;
+        }
+
+        .rank {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            background: #f56;
+            color: #fff;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav>Tes Kraepelin</nav>
+    <div class="container">
+    				<div class="soal">
+        <div id="startContainer">
+            <label for="duration">Durasi Tes (detik): </label>
+            <input type="number" id="duration" placeholder="" value="30">
+            <button id="startButton" onclick="startTest()">Start</button>
+        </div>
+        <button id="refreshButton" onclick="refreshPage()">Refresh</button>
+
+        <div id="question"></div>
+        <input type="number" id="answer" placeholder="Jawab disini">
+     </div>
+        <div id="result"></div>
+        <div id="score">
+            <h3>Hasil Tes:</h3>
+            <div class="rank">
+                <p>Terjawab: <span id="totalAnswers">0</span></p>
+                <p>Benar: <span id="correctAnswers">0</span></p>
+                <p>Salah: <span id="wrongAnswers">0</span></p>
+            </div>
+            <h3>Detail:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Soal</th>
+                        <th>Jawaban</th>
+                        <th>Hasil</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let totalAnswers = 0;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let timer;
+        let timeRemaining = 10;
+        let lastNumber = Math.floor(Math.random() * 10); // Angka pertama dalam penjumlahan
+        let testDuration;
+        let testStarted = false;
+
+        function generateQuestion() {
+            const num2 = Math.floor(Math.random() * 10);
+            const question = `${lastNumber} + ${num2}`;
+            lastNumber = num2; // Simpan angka terakhir untuk digunakan di soal berikutnya
+            return question;
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            const question = document.getElementById('question').innerText;
+            const [num1, num2] = question.split(' + ').map(num => parseInt(num));
+            const correctAnswer = (num1 + num2) % 10;
+
+            const resultText = (userAnswer === correctAnswer) ? 'Benar' : 'Salah';
+            const scoreTable = document.getElementById('scoreTable');
+            const newRow = scoreTable.insertRow();
+
+            const questionNumber = scoreTable.rows.length;
+
+            newRow.innerHTML = `<td>${questionNumber}</td><td>${question}</td><td>${userAnswer}</td><td>${resultText}</td>`;
+
+            totalAnswers++;
+            if (userAnswer === correctAnswer) {
+                correctAnswers++;
+            } else {
+                wrongAnswers++;
+            }
+
+            document.getElementById('totalAnswers').innerText = totalAnswers;
+            document.getElementById('correctAnswers').innerText = correctAnswers;
+            document.getElementById('wrongAnswers').innerText = wrongAnswers;
+
+            document.getElementById('question').innerText = generateQuestion();
+            document.getElementById('answer').value = '';
+        }
+
+        // ...
+
+// ...
+
+function updateTime() {
+    if (!testStarted) {
+        return;
+    }
+
+    document.getElementById('result').innerText = `Waktu Tersisa: ${testDuration} detik`;
+
+    if (testDuration === 0) {
+        clearInterval(timer);
+        document.getElementById('question').innerText = '';
+        document.getElementById('answer').setAttribute('disabled', 'disabled');
+        document.getElementById('result').innerText = 'Waktu habis! Tes selesai.';
+        document.getElementById('answer').style.display = 'none';
+        document.getElementById('refreshButton').style.display = 'block';
+    }
+
+    testDuration--;
+}
+
+// ...
+
+function refreshPage() {
+    location.reload();
+}
+
+// ...
+
+
+        function startTest() {
+    testDuration = parseInt(document.getElementById('duration').value);
+
+    if (isNaN(testDuration) || testDuration <= 0) {
+        alert('Masukkan durasi tes yang valid.');
+        return;
+    }
+
+    // Sembunyikan elemen startContainer
+    document.getElementById('startContainer').style.display = 'none';
+
+    // Tampilkan elemen question dan answer
+    document.getElementById('question').style.display = 'block';
+    document.getElementById('answer').style.display = 'block';
+
+    // Mulai timer
+    timer = setInterval(updateTime, 1000);
+    testStarted = true;
+}
+
+        // Generate the first question when the page loads
+        document.getElementById('question').innerText = generateQuestion();
+        document.getElementById('answer').addEventListener('input', checkAnswer);
+    </script>
+</body>
+</html>
